@@ -1,0 +1,90 @@
+diff -crB A/include/chipmunk/chipmunk_types.h B/include/chipmunk/chipmunk_types.h
+*** A/include/chipmunk/chipmunk_types.h	Tue Oct 15 23:16:23 2013
+--- B/include/chipmunk/chipmunk_types.h	Fri Mar 14 19:16:28 2014
+***************
+*** 5,13 ****
+     #include "TargetConditionals.h"
+  #endif
+  
+! #if ((TARGET_OS_IPHONE == 1) || (TARGET_OS_MAC == 1)) && (!defined CP_USE_CGPOINTS)
+! 	#define CP_USE_CGPOINTS 1
+! #endif
+  
+  #if CP_USE_CGPOINTS == 1
+  	#if TARGET_OS_IPHONE
+--- 5,13 ----
+     #include "TargetConditionals.h"
+  #endif
+  
+! //#if ((TARGET_OS_IPHONE == 1) || (TARGET_OS_MAC == 1)) && (!defined CP_USE_CGPOINTS)
+! //	#define CP_USE_CGPOINTS 1
+! //#endif
+  
+  #if CP_USE_CGPOINTS == 1
+  	#if TARGET_OS_IPHONE
+Only in B/xcode: .DS_Store
+diff -crB A/xcode/Chipmunk6.xcodeproj/project.pbxproj B/xcode/Chipmunk6.xcodeproj/project.pbxproj
+*** A/xcode/Chipmunk6.xcodeproj/project.pbxproj	Tue Oct 15 23:16:23 2013
+--- B/xcode/Chipmunk6.xcodeproj/project.pbxproj	Fri Mar 14 19:12:47 2014
+***************
+*** 772,778 ****
+  					"-Wall",
+  					"-W",
+  					"-Wno-unused-parameter",
+- 					"-Werror",
+  					"-Wnewline-eof",
+  					"-pedantic",
+  				);
+--- 772,777 ----
+***************
+*** 796,802 ****
+  					"-Wall",
+  					"-W",
+  					"-Wno-unused-parameter",
+- 					"-Werror",
+  					"-Wnewline-eof",
+  					"-pedantic",
+  				);
+--- 795,800 ----
+***************
+*** 855,861 ****
+  					"-Wall",
+  					"-W",
+  					"-Wno-unused-parameter",
+- 					"-Werror",
+  					"-Wnewline-eof",
+  				);
+  			};
+--- 853,858 ----
+***************
+*** 878,884 ****
+  					"-Wall",
+  					"-W",
+  					"-Wno-unused-parameter",
+- 					"-Werror",
+  					"-Wnewline-eof",
+  				);
+  			};
+--- 875,880 ----
+diff -crB A/xcode/iphonestatic.command B/xcode/iphonestatic.command
+*** A/xcode/iphonestatic.command	Tue Oct 15 23:16:23 2013
+--- B/xcode/iphonestatic.command	Fri Mar 14 19:15:27 2014
+***************
+*** 47,54 ****
+  system "rm -rf #{OUTPUT_DIR_NAME}"
+  system "mkdir #{OUTPUT_DIR_NAME}"
+  
+! system "xcodebuild -project Chipmunk6.xcodeproj -sdk iphoneos#{IOS_SDK_VERSION} -configuration Release -target ChipmunkStatic-iPhone"
+! system "xcodebuild -project Chipmunk6.xcodeproj -sdk iphonesimulator#{IOS_SDK_VERSION} -arch i386 -configuration Debug -target ChipmunkStatic-iPhone"
+  system "lipo build/Debug-iphonesimulator/libChipmunk-iPhone.a build/Release-iphoneos/libChipmunk-iPhone.a -create -output #{OUTPUT_DIR_NAME}/libChipmunk-iPhone.a"
+  
+  system "rsync -r --exclude='.*' ../include/chipmunk/ #{OUTPUT_DIR_NAME}"
+--- 47,54 ----
+  system "rm -rf #{OUTPUT_DIR_NAME}"
+  system "mkdir #{OUTPUT_DIR_NAME}"
+  
+! system "xcodebuild -project Chipmunk6.xcodeproj -sdk iphoneos#{IOS_SDK_VERSION} -arch armv7 -arch armv7s -arch arm64 -configuration Release -target ChipmunkStatic-iPhone"
+! system "xcodebuild -project Chipmunk6.xcodeproj -sdk iphonesimulator#{IOS_SDK_VERSION} -arch i386 -arch x86_64 -configuration Debug -target ChipmunkStatic-iPhone"
+  system "lipo build/Debug-iphonesimulator/libChipmunk-iPhone.a build/Release-iphoneos/libChipmunk-iPhone.a -create -output #{OUTPUT_DIR_NAME}/libChipmunk-iPhone.a"
+  
+  system "rsync -r --exclude='.*' ../include/chipmunk/ #{OUTPUT_DIR_NAME}"
